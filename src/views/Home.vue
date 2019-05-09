@@ -30,10 +30,11 @@
               type="text"
             ></v-text-field>
           </v-flex>
-          <v-flex class="result my-4">
+          <v-flex class="result my-2">
             <!-- TODO: change conditional - output total books -->
             <p class="white--text" v-if="totalBooks > 0">
-              Your search returned {{ totalBooks }} books!
+              Your search returned {{ totalBooks }} books!<br>
+              Here's the first 10...
             </p>
           </v-flex>
         </v-layout>

@@ -1,22 +1,22 @@
 <template>
   <!-- content flex container for result -->
-  <v-layout row wrap justify-center>
+  <v-layout row wrap justify-center class="my-4">
     <!-- iterating over result here -->
-    <v-flex v-for="book in books" :key="book.title" xs12 sm6 md3 class="ma-4">
-      <v-card height="100%">
-        <v-layout>
+    <v-flex v-for="book in books" :key="book.title" xs12 sm4 md3 class="ma-1">
+      <v-card fluid height="100%">
+        <v-layout >
           <!-- IMAGE -->
-          <v-flex>
-            <a target="_blank" :href="book.volumeInfo.infoLink"><img  class="cover"
-            :alt="book.volumeInfo.title"
-            :src="(getImage(book.volumeInfo))"/></a>
+          <v-flex class="mr-1">
+           <a target="_blank" :href="book.volumeInfo.infoLink">
+             <img class="cover" :src="getImage(book.volumeInfo)"/>
+           </a> 
             
           </v-flex>
           <!-- CONTENT -->
-          <v-flex class="book-details">
+          <v-flex class="book-details ">
             <v-card-title>
               <h2 class="title font-weight-regular">
-                {{ book.volumeInfo.title }}
+                {{ book.volumeInfo.title.length < 15? book.volumeInfo.title : trimTitle(book.volumeInfo.title)  }}
               </h2>
               <p class="font-weight-light">
                 by
@@ -50,6 +50,10 @@ export default {
                 return "https://placekitten.com/g/200/300";
             }
 },
+trimTitle:function(title){
+  return title.slice(0,20) + "...";
+
+},
 
   }
 };
@@ -58,6 +62,7 @@ export default {
 .book-details {
   display: flex;
   flex-direction: column;
+  overflow:hidden;
 }
 .book-details > * {
   display: flex;
@@ -67,13 +72,22 @@ export default {
   height: 100%;
 }
 p {
-  margin-bottom: 0;
+  
 }
 a{
   text-decoration: none;
+  margin:0;
+  padding:0;
+  cursor:pointer;
 }
 .cover{
-  height: 100%;
   width:100%;
+  height: auto;
+  width:150px; 
+  
+  
+ 
+}
+.img-pos{
 }
 </style>
