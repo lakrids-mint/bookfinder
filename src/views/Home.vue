@@ -2,105 +2,102 @@
   <v-container fluid class="ma-0 pa-0">
     <v-layout column>
       <!-- SEARCH -->
-      <v-flex  class="search amber darken-1">
+      <v-flex class="search amber darken-1">
         <v-layout column align-center>
           <!-- heading -->
           <v-flex xs12 sm6 md3>
-            <h1 class="display-4 white--text text-xs-center my-4">Book Finder</h1>
-            <h2 class="headline white--text text-xs-center mb-4">Search & discover</h2>
+            <h1 class="display-4 white--text text-xs-center my-4">
+              Book Finder
+            </h1>
+            <h2 class="headline white--text text-xs-center mb-4">
+              Search'n discover
+            </h2>
           </v-flex>
-          <!-- search bar -->      
-           <v-flex  xs12 sm6 md3>
-           
-                   <v-text-field
-            solo
-           @click:append
-           append-icon="search"
-            clear-icon
-            autofocus
-            background-color="white"
-            clear-icon="mdi-close-circle"
-            clearable
-            placeholder="What are you looking for?"
-            type="text"
-          ></v-text-field>
-        </v-flex>
-        <!-- ERROR MESSAGES -->
-        <v-flex class="error-text">
-        </v-flex>
-       </v-layout>
-      </v-flex>
-
- <!--RESULT  -->
-
-       <v-flex class="result my-4" >
-        <v-layout row wrap justify-center>
-          <v-flex xs12 sm6 md3 class="ma-4">
-            <v-card >
-              <v-layout>
-                <!-- IMAGE -->
-                <v-flex>
-                  <v-img src="https://placekitten.com/g/200/300" class="full-width"></v-img>
-                </v-flex>
-                <!-- CONTENT -->
-                <v-flex class="book-details">
-                   <v-card-title>
-                       <h2 class="title font-weight-regular">title</h2>
-                       <p class="font-weight-light" >by author</p>
-                       <p class="font-weight-light" >publisher</p>            
-                   </v-card-title>
-                   <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn flat color="orange"><v-icon>arrow_right</v-icon></v-btn>
-                   </v-card-actions>
-                </v-flex>
-              </v-layout>
-              </v-card>
+          <!-- ERROR MESSAGES -->
+          <v-flex class="error-text ma-2">
+            <p class="white--text" v-if="error">{{ error }}</p>
           </v-flex>
-          
+          <!-- search bar -->
+          <v-flex xs12 sm6 md3>
+            <v-text-field
+              solo
+              v-model="input"
+              @click:append.prevent="search"
+              @keyup.enter="search"
+              append-icon="search"
+              autofocus
+              placeholder="What are you looking for?"
+              type="text"
+            ></v-text-field>
+          </v-flex>
+          <v-flex class="result my-4">
+            <!-- TODO: change conditional - output total books -->
+            <p class="white--text" v-if="totalBooks > 0">
+              Your search returned {{ totalBooks }} books!
+            </p>
+          </v-flex>
         </v-layout>
       </v-flex>
-    </v-layout>    
-  </v-container> 
+
+      <!--RESULT  -->
+
+      <v-flex class="result my-4">
+        <!-- pass down props -->
+
+        <Book :books="books"></Book>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
 // @ is an alias to /src
 import Book from "@/components/Book.vue";
+import axios from "axios";
 
 export default {
-  name: "home",
   components: {
     Book
+  },
+  data() {
+    return {
+      input: "",
+      APIURL: "https://www.googleapis.com/books/v1/volumes?q=",
+      error: "",
+      books: [],
+      totalBooks: 0
+    };
+  },
+  methods: {
+    search() {
+      //check for empty string
+      if(this.input==""){
+        return this.error = "You must give something to get something ;)";}
+        else {
+        axios
+        .get(this.APIURL + this.input)
+        .then(response => {
+          //books to list
+          this.books = response.data.items;
+
+          //get total amount of books matching search criteria
+          this.totalBooks = response.data.totalItems;
+        })
+        .catch(error => {
+          // handle errors
+          this.error = error.message;
+          console.log(error);
+        });
+
+                }
+
+   
+    }
   }
 };
 </script>
 <style>
-.search{
-height: 50vh;}
-
-.book-details{
-     
-    display:flex;
-    flex-direction:column;
-     
-  
- 
+.search {
+  height: 60vh;
 }
-.book-details > * {
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  flex-grow: 2;
-  height:100%;
-
-}
-p{
- margin-bottom:0;
-}
-
-.full-width {
-}
-
-
 </style>

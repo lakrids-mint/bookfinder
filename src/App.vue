@@ -1,22 +1,20 @@
 <template>
   <v-app>
-      <router-view></router-view>
-   
+    <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-import Book from './components/Book'
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    Book
+    
   },
-  data () {
+  data() {
     return {
       //
-    }
+    };
   }
-}
+};
 </script>
