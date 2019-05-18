@@ -2,16 +2,12 @@
   <v-container fluid class="ma-0 pa-0">
     <v-layout column>
       <!-- SEARCH -->
-      <v-flex class="search amber darken-1">
+      <v-flex class="search light-blue darken-4">
         <v-layout column align-center>
           <!-- heading -->
           <v-flex xs12 sm6 md3>
-            <h1 class="display-4 white--text text-xs-center my-4">
-              Book Finder
-            </h1>
-            <h2 class="headline white--text text-xs-center mb-4">
-              Search'n discover
-            </h2>
+            <h1 class="display-4 white--text text-xs-center my-4 font-weight-thin">Book Finder</h1>
+            <h2 class="headline white--text text-xs-center mb-4 font-weight-thin">Search'n discover</h2>
           </v-flex>
           <!-- ERROR MESSAGES -->
           <v-flex class="error-text ma-2">
@@ -31,10 +27,10 @@
             ></v-text-field>
           </v-flex>
           <v-flex class="result my-2">
-            <!-- TODO: change conditional - output total books -->
+            <!--  - output total books -->
             <p class="white--text text-xs-center" v-if="totalBooks > 0">
-              Your search returned {{ totalBooks }} books!<br>
-              Here's the first 10...
+              Your search returned {{ totalBooks }} books!
+              <br>
             </p>
           </v-flex>
         </v-layout>
@@ -62,7 +58,7 @@ export default {
   },
   data() {
     return {
-      input: "",
+      input: "".trim(),
       APIURL: "https://www.googleapis.com/books/v1/volumes?q=",
       error: "",
       books: [],
@@ -72,27 +68,25 @@ export default {
   methods: {
     search() {
       //check for empty string
-      if(this.input==""){
-        return this.error = "You must give something to get something ;)";}
-        else {
+      if (this.input == "") {
+        return (this.error = "You must give something to get something ;)");
+      } else {
         axios
-        .get(this.APIURL + this.input)
-        .then(response => {
-          //books to list
-          this.books = response.data.items;
+          .get(this.APIURL + this.input)
+          .then(response => {
+            //books to list
+            this.books = response.data.items;
 
-          //get total amount of books matching search criteria
-          this.totalBooks = response.data.totalItems;
-        })
-        .catch(error => {
-          // handle errors
-          this.error = error.message;
-          console.log(error);
-        });
-
-                }
-
-   
+            //get total amount of books matching search criteria
+            this.totalBooks = response.data.totalItems;
+            this.input = "";
+          })
+          .catch(error => {
+            // handle errors
+            this.error = error.message;
+            console.log(error);
+          });
+      }
     }
   }
 };

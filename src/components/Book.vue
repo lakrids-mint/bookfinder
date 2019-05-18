@@ -58,6 +58,8 @@ trimTitle:function(title){
   }
 };
 </script>
+
+
 <style scoped>
 .book-details {
   display: flex;
@@ -71,9 +73,7 @@ trimTitle:function(title){
   flex-grow: 2;
   height: 100%;
 }
-p {
-  
-}
+
 a{
   text-decoration: none;
   margin:0;
@@ -84,10 +84,6 @@ a{
   width:100%;
   height: auto;
   width:150px; 
-  
-  
- 
 }
-.img-pos{
-}
+
 </style>
